@@ -26,4 +26,5 @@ const postSchema = new mongoose.Schema({
 // Initializing an array of comments linked with the post
 });
 
-module.exports = mongoose.model('Post', postSchema);
+const sPost = mongoose.model('Post', postSchema);
+module.exports = sPost;
