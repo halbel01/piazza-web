@@ -22,19 +22,13 @@ const userEndpoints = require('./api/users');
 // Introducing and importing the required api routes
 // Referencing our 'api' folder with two initialized variables
 
-const connectToDatabase = async () => {
-  try {
-    await mongoose.connect(process.env.DATABASE_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true
-    });
+mongoose.connect('mongodb://localhost:27017/mydatabase')
+  .then(() => {
     console.log('Connected to MongoDB');
-  } catch (err) {
-    console.error('Error connecting to MongoDB:', err);
-  }
-};
-// Calling the async function to connect to the database
-connectToDatabase();
+  })
+  .catch((err) => {
+    console.error('Connection error:', err);
+  });
 // Initializing a connection with our MongoDB database
 
 application.use('/api/posts', postEndpoints);
