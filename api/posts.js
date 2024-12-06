@@ -1,7 +1,6 @@
 const express = require('express');
 const sPost = require('../schemas/schemaPost');
 const access = require('../middlewares/accessControl');
-const { TextEncoder } = require('util');
 const router = express.Router();
 
 router.post('/', access, async (request, response) => {
