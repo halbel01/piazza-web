@@ -2,8 +2,11 @@ const serverFramework = require('express');
 const database = require('mongoose');       
 const jsonParser = require('body-parser');  
 const envLoader = require('dotenv');
-const { TextEncoder } = require('util');
 // Introducing and importing the required components
+
+if (typeof TextEncoder === 'undefined') {
+  global.TextEncoder = require('util').TextEncoder;
+}
 
 envLoader.config();
 // Loading environment parameters from the .env file
