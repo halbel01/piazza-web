@@ -1,7 +1,8 @@
 const serverFramework = require('express'); 
 const database = require('mongoose');       
 const jsonParser = require('body-parser');  
-const envLoader = require('dotenv');        
+const envLoader = require('dotenv');
+const { TextEncoder } = require('util');
 // Introducing and importing the required components
 
 envLoader.config();
