@@ -16,7 +16,7 @@ module.exports = (database) => {
         owner,
         likes: [],
         comments: [],
-        createdAt: new Date(),
+        timeCreated: new Date(),
       };
 // Utilizing the data provided to create a new post.
             const docRef = await posts.add(newPost);
