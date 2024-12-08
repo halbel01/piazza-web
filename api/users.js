@@ -25,9 +25,9 @@ router.post('/register', async (request, response) => {
       };
 // Leveraging our User model to generate a new instance comprised of username, email and password
       const docRef = await users.add(userModel);
-      res.status(201).json({ id: docRef.id, ...userModel, password: undefined }); 
+      response.status(201).json({ id: docRef.id, ...userModel, password: undefined }); 
     } catch (err) {
-      res.status(400).send(err.message);
+      response.status(400).send(err.message);
     }
   });
 // Excluding the password from our response
@@ -39,14 +39,14 @@ router.post('/login', async (request, response) => {
       const userQuery = await users.where('email', '==', email).get();
 
       if (userQuery.empty) {
-        return res.status(404).send('User not found');
+        return response.status(404).send('User not found');
       }
 // Locating one's email to then deliver a suitable response
       const user = userQuery.docs[0].data();
 
     const correctPassword = await bcrypt.compare(password, user.password);
     if (!correctPassword) {
-        return res.status(401).send('Incorrect password');
+        return response.status(401).send('Incorrect password');
       }
 // Employing a comparable method and function to check password
 // Displaying a message according to the result
@@ -57,9 +57,9 @@ router.post('/login', async (request, response) => {
         { expiresIn: '1h' }
       );
 
-      res.json({ token });
+      response.json({ token });
     } catch (err) {
-      res.status(400).send(err.message);
+      response.status(400).send(err.message);
     }
   });
 
