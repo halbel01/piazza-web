@@ -36,9 +36,9 @@ application.use('/api/posts', postEndpoints);
 application.use('/api/users', userEndpoints);
 // Configuring the route endpoints
 
-const SERVER_PORT = process.env.PORT || 3000;
-application.listen(SERVER_PORT, () => {
-    console.log(`Server running on port ${SERVER_PORT}`);
+const PORT = process.env.PORT || 3000;
+application.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
 });
 // Specifying the server port
 // Commencing our listening procedure
