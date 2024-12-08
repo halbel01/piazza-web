@@ -21,7 +21,7 @@ router.post('/register', async (request, response) => {
         username,
         email,
         password: hashedPassword,
-        createdAt: new Date(),
+        timeCreated: new Date(),
       };
 // Leveraging our User model to generate a new instance comprised of username, email and password
       const docRef = await users.add(userModel);
