@@ -1,26 +1,11 @@
 const serverFramework = require('express'); 
-const firebaseAdmin = require('firebase-admin');      
+const database = require('mongoose');       
 const jsonParser = require('body-parser');  
-const dotenv = require('dotenv');
+const envLoader = require('dotenv');        
 // Introducing and importing the required components
 
-if (typeof TextEncoder === 'undefined') {
-  global.TextEncoder = require('util').TextEncoder;
-}
-
-dotenv.config();
+envLoader.config();
 // Loading environment parameters from the .env file
-
-firebaseAdmin.declareApp({
-  credential: firebaseAdmin.credential.cert({
-    projectId: process.env.FIREBASE_PROJECT_ID,
-    clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-    privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
-  }),
-});
-// Initializing a connection with our database
-
-const database = firebaseAdmin.database();
 
 const application = serverFramework();
 // Declaring and launching the Express application.
@@ -32,6 +17,11 @@ const postEndpoints = require('./api/posts');
 const userEndpoints = require('./api/users'); 
 // Introducing and importing the required api routes
 // Referencing our 'api' folder with two initialized variables
+
+database.connect(process.env.DATABASE_URI, { useNewUrlParser: true, useUnifiedTopology: true }, () => {
+    console.log('Connected to MongoDB');
+});
+// Initializing a connection with our MongoDB database
 
 application.use('/api/posts', postEndpoints);
 application.use('/api/users', userEndpoints);
