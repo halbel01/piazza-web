@@ -1,5 +1,5 @@
 const serverFramework = require('express'); 
-const database = require('mongoose');       
+const mongoose = require('mongoose');       
 const jsonParser = require('body-parser');  
 const envLoader = require('dotenv');        
 // Introducing and importing the required components
@@ -18,9 +18,18 @@ const userEndpoints = require('./api/users');
 // Introducing and importing the required api routes
 // Referencing our 'api' folder with two initialized variables
 
-database.connect(process.env.DATABASE_URI, { useNewUrlParser: true, useUnifiedTopology: true }, () => {
+const DATABASE_URI = process.env.DATABASE_URI;
+
+mongoose.connect(DATABASE_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
     console.log('Connected to MongoDB');
-});
+  })
+  .catch((err) => {
+    console.error('Error connecting to MongoDB:', err.message);
+  });
 // Initializing a connection with our MongoDB database
 
 application.use('/api/posts', postEndpoints);
