@@ -1,86 +1,29 @@
-const { getDatabase } = require('firebase-admin/database');
-const db = getDatabase();
+const mongoose = require('mongoose');
 
-const Post = {
-  // Declaring a new post
-  create: async (data) => {
-    const docRef = db.collection('posts').doc(); // Generating a new document ID
-    await docRef.set({
-      title: data.title,
-      category: data.category,
-      mainBody: data.mainBody,
-      expire: data.expire || null,
-      owner: data.owner,
-      likes: [],
-      dislikes:[],
-      comments: [],
-      timeCreated: new Date()
-    });
-    return docRef.id; 
-  },
+const postSchema = new mongoose.Schema({
+  title: { type: String, required: true },
+  category: { type: String, required: true }, 
+  main: { type: String, required: true },
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
 // Separating the post into different categories
+
+  timeCreated: { type: Date, default: Date.now },
 // Establishing a timestamp for when the post is created
 
-  findById: async (id) => {
-    const doc = await db.collection('posts').doc(id).get();
-    if (!doc.exists) {
-      throw new Error('Post not found');
-    }
-    return { id: doc.id, ...doc.data() };
-  },
-
-  addLike: async (id, userId) => {
-    const postRef = db.collection('posts').doc(id);
-    // Generating a new document ID
-    const post = await postRef.get();
-    if (!post.exists) {
-      throw new Error('Post not found');
-    }
-    const data = post.data();
-    if (data.likes.includes(userId)) {
-      throw new Error('User has already liked this post');
-    }
-    // Checking if the user has already liked or disliked the post
-    // Avoiding duplicate instances
-    await postRef.update({
-      likes: [...data.likes, userId]
-    });
-  },
+  expire: Date,
+  status: { type: String, default: 'Live' }, 
+  likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
 // Constructing an array to identify and group those who have liked the post
 
-  addDislike: async (id, userId) => {
-    const postRef = db.collection('posts').doc(id);
-    // Generating a new document ID
-    const post = await postRef.get();
-    if (!post.exists) {
-      throw new Error('Post not found');
-    }
-    const data = post.data();
-    if (data.dislikes.includes(userId)) {
-      throw new Error('User has already disliked this post');
-    }
-    // Checking if the user has already liked or disliked the post
-    // Avoiding duplicate instances
-    await postRef.update({
-      dislikes: [...data.dislikes, userId],
-      likes: updatedLikes
-    });
-// Handling and updating the dislikes functionality of our system
-  },
+  dislikes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
 // Establishing an array to identify and group those who have disliked the post
 
-  addComment: async (id, comment) => {
-    const postRef = db.collection('posts').doc(id);
-    // Generating a new document ID
-    const post = await postRef.get();
-    if (!post.exists) {
-      throw new Error('Post not found');
-    }
-    await postRef.update({
-      comments: [...post.data().comments, comment]
-    });
-  }
-};
+  comments: [{
+    body: String,
+    date: Date,
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+  }]
 // Initializing an array of comments linked with the post
+});
 
-module.exports = Post;
+module.exports = mongoose.model('Post', postSchema);
