@@ -2,7 +2,7 @@ const { getDatabase } = require('firebase-admin/database');
 const db = getDatabase();
 
 const Post = {
-  // Create a new post
+  // Declaring a new post
   create: async (data) => {
     const docRef = db.collection('posts').doc(); // Generating a new document ID
     await docRef.set({
