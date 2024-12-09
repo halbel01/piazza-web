@@ -8,8 +8,9 @@
   },
   "devDependencies": {
     "nodemon": "^3.1.7"
-  }
+  },
   "resolutions": {
-  "whatwg-url": "14.1.0"
+    "whatwg-url": "14.1.0"
+  }
 }
-}
+
