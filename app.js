@@ -20,10 +20,7 @@ const userEndpoints = require('./api/users');
 
 async function connectToDatabase() {
   try {
-    await mongoose.connect(process.env.DATABASE_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    await mongoose.connect(process.env.DATABASE_URI);
     console.log('Connected to MongoDB');
   } catch (err) {
     console.error('Error connecting to MongoDB:', err);
