@@ -2,7 +2,7 @@ const jwToken = require('jsonwebtoken');
 // Managing JWT functions by importing the jsonwebtoken package 
 
 module.exports = function (request, response, forward) {
-  const webToken = request.header('Access Granted');
+  const webToken = request.header('Authorization');
   if (!webToken) return response.status(401).send('Access Denied');
 // Attempting to extract a token from the 'Access Granted' request header
 
