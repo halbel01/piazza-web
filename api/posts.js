@@ -51,6 +51,18 @@ router.post('/:id/comment', access, async (req, res) => {
   }
 });
 
+router.get('/', access, async (req, res) => {
+  // Declaring a new route to browse posts
+  const { category } = req.query; // Filtering by category through an optional query parameter
+  try {
+    const filter = category ? { category } : {};
+    const posts = await sPost.find(filter).populate('owner', 'username').exec();
+    res.json(posts);
+  } catch (err) {
+    res.status(400).send(err);
+  }
+});
+
 module.exports = router;
 
 
