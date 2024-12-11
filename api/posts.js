@@ -35,6 +35,17 @@ router.post('/:id/like', access, async (request, response) => {
   }
 });
 
+router.post('/:id/dislike', access, async (request, response) => {
+  try {
+    const post = await sPost.findById(request.params.id);
+    post.dislikes.push(request.user._id);
+    await post.save();
+    response.send('disliked');
+  } catch (err) {
+    response.status(400).send(err);
+  }
+});
+
 // Commenting on post
 router.post('/:id/comment', access, async (req, res) => {
   const comment = { body: req.body.body, date: new Date(), user: req.user._id };
