@@ -51,15 +51,13 @@ router.post('/:id/comment', access, async (req, res) => {
   }
 });
 
-router.get('/', access, async (req, res) => {
-  // Declaring a new route to browse posts
-  const { category, owner } = req.query; // Filtering by category or owner through an optional query parameter
+router.get('/:id', access, async (req, res) => {
   try {
-    const filter = {};
-    if (category) filter.category = category;  // Filtering by category
-    if (owner) filter.owner = owner;
-    const posts = await sPost.find(filter).populate('owner', 'username').exec();
-    res.json(posts);
+    const post = await sPost.findById(req.params.id).populate('owner', 'username').exec();
+    if (!post) {
+      return res.status(404).send('Post not found');
+    }
+    res.json(post);
   } catch (err) {
     res.status(400).send(err);
   }
