@@ -4,7 +4,7 @@ const postSchema = new mongoose.Schema({
   title: { type: String, required: true },
   category: { type: String, required: true }, 
   mainBody: { type: String, required: true },
-  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
 // Separating the post into different categories
 
   timeCreated: { type: Date, default: Date.now },
@@ -21,7 +21,7 @@ const postSchema = new mongoose.Schema({
   comments: [{
     body: String,
     date: Date,
-    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+    owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
   }]
 // Initializing an array of comments linked with the post
 });
